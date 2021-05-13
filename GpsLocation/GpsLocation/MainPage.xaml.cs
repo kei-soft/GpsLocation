@@ -113,26 +113,46 @@ namespace GpsLocation
 
         private void AddLocationData(LocationInfo locationInfo)
         {
-            StackLayout stackLayout = new StackLayout() { Orientation = StackOrientation.Horizontal, HeightRequest = 50 };
+            StackLayout stackLayout = new StackLayout() { Orientation = StackOrientation.Horizontal, HeightRequest = 50};
             Label nameLabel = new Label() { TextColor = Color.Black, Text = locationInfo.Name, WidthRequest = 70, Margin = new Thickness(10, 0, 0, 0), VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
-            Label latLabel = new Label() { TextColor = Color.Black, Text = "Latitude:" + locationInfo.Latitude, VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
-            Label lonLabel = new Label() { TextColor = Color.Black, Text = "Longitude:" + locationInfo.Longitude, VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
+            Label latLabel = new Label() { TextColor = Color.Black, Text = "Lat: " + locationInfo.Latitude, VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
+            Label lonLabel = new Label() { TextColor = Color.Black, Text = "Lon: " + locationInfo.Longitude, VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
             stackLayout.Children.Add(nameLabel);
             stackLayout.Children.Add(latLabel);
             stackLayout.Children.Add(lonLabel);
             Button deleteButton = new Button() 
             { 
-                WidthRequest = 40, HeightRequest = 40, Text = "X", Margin = new Thickness(0, 0, 10, 0), 
-                BackgroundColor = Color.White, BorderColor = Color.Black, TextColor = Color.Black, BorderWidth = 0.5, ClassId= locationInfo.Name
+                HorizontalOptions = LayoutOptions.EndAndExpand,
+                VerticalOptions = LayoutOptions.Center,
+                WidthRequest = 40, HeightRequest = 40, Text = "x", Margin = new Thickness(0, 0, 5, 0), 
+                BackgroundColor = Color.White, BorderColor = Color.Black, TextColor = Color.Black, BorderWidth = 0, ClassId= locationInfo.Name
             };
             deleteButton.Clicked += DeleteButton_Clicked;
             stackLayout.Children.Add(deleteButton);
             this.locationStackLayout.Children.Add(stackLayout);
         }
 
-        private void DeleteButton_Clicked(object sender, EventArgs e)
+        private async void DeleteButton_Clicked(object sender, EventArgs e)
         {
-            
+            string name = ((Button)sender).ClassId;
+
+            bool isYes = await DisplayAlert("삭제확인", "'" + name + "' 항목을 제거 하시겠습니까?", "예", "아니오");
+            if (isYes)
+            {
+                var deleteitem = locationInfos.Where(c => c.Name == name).FirstOrDefault();
+                if (deleteitem != null)
+                {
+                    locationInfos.Remove(deleteitem);
+
+                    SetPreferences(this.SaveKey, JsonConvert.SerializeObject(locationInfos));
+
+                    this.locationStackLayout.Children.Clear();
+                    foreach (var locationInfo in this.locationInfos)
+                    {
+                        AddLocationData(locationInfo);
+                    }
+                }
+            }
         }
 
         #region SetPreferences
