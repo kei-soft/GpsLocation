@@ -44,6 +44,12 @@ namespace GpsLocation
         {
             string result = await DisplayPromptAsync("위치이름", "위치이름을 지정해주세요");
 
+            if (locationInfos.Where(c => c.Name == result).Any())
+            {
+                await DisplayAlert("이름중복", "위치 이름이 중복됩니다.", "예");
+                return;
+            }
+
             if (result != null)
             {
                 try
@@ -95,12 +101,15 @@ namespace GpsLocation
             }
         }
 
-        private void ClearButton_Clicked(object sender, EventArgs e)
+        private async void ClearButton_Clicked(object sender, EventArgs e)
         {
-            SetPreferences(this.SaveKey, null);
-            this.locationStackLayout.Children.Clear();
+            bool isYes = await DisplayAlert("삭제확인", "모두 제거 하시겠습니까?", "예", "아니오");
+            if (isYes)
+            {
+                SetPreferences(this.SaveKey, null);
+                this.locationStackLayout.Children.Clear();
+            }
         }
-
 
         private void AddLocationData(LocationInfo locationInfo)
         {
@@ -111,8 +120,19 @@ namespace GpsLocation
             stackLayout.Children.Add(nameLabel);
             stackLayout.Children.Add(latLabel);
             stackLayout.Children.Add(lonLabel);
-
+            Button deleteButton = new Button() 
+            { 
+                WidthRequest = 40, HeightRequest = 40, Text = "X", Margin = new Thickness(0, 0, 10, 0), 
+                BackgroundColor = Color.White, BorderColor = Color.Black, TextColor = Color.Black, BorderWidth = 0.5, ClassId= locationInfo.Name
+            };
+            deleteButton.Clicked += DeleteButton_Clicked;
+            stackLayout.Children.Add(deleteButton);
             this.locationStackLayout.Children.Add(stackLayout);
+        }
+
+        private void DeleteButton_Clicked(object sender, EventArgs e)
+        {
+            
         }
 
         #region SetPreferences
