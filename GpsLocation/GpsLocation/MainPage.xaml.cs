@@ -48,10 +48,20 @@ namespace GpsLocation
             {
                 try
                 {
+                    Device.BeginInvokeOnMainThread(new Action(() =>
+                    {
+                        this.indicator.IsVisible = true;
+                    }));
+                    
                     var location = await Geolocation.GetLocationAsync();
-
+                    
                     if (location != null)
                     {
+                        Device.BeginInvokeOnMainThread(new Action(() =>
+                        {
+                            this.indicator.IsVisible = false;
+                        }));
+
                         LocationInfo locationInfo = new LocationInfo();
                         locationInfo.Name = result;
                         locationInfo.Latitude = location.Latitude.ToString();
@@ -95,7 +105,7 @@ namespace GpsLocation
         private void AddLocationData(LocationInfo locationInfo)
         {
             StackLayout stackLayout = new StackLayout() { Orientation = StackOrientation.Horizontal, HeightRequest = 50 };
-            Label nameLabel = new Label() { TextColor = Color.Black, Text = locationInfo.Name, WidthRequest = 80, Margin = new Thickness(10, 0, 0, 0), VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
+            Label nameLabel = new Label() { TextColor = Color.Black, Text = locationInfo.Name, WidthRequest = 70, Margin = new Thickness(10, 0, 0, 0), VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
             Label latLabel = new Label() { TextColor = Color.Black, Text = "Latitude:" + locationInfo.Latitude, VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
             Label lonLabel = new Label() { TextColor = Color.Black, Text = "Longitude:" + locationInfo.Longitude, VerticalOptions = LayoutOptions.Center, VerticalTextAlignment = TextAlignment.Center };
             stackLayout.Children.Add(nameLabel);
