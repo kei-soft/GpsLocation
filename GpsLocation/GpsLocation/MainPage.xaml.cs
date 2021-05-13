@@ -48,7 +48,7 @@ namespace GpsLocation
             {
                 try
                 {
-                    var location = await Geolocation.GetLastKnownLocationAsync();
+                    var location = await Geolocation.GetLocationAsync();
 
                     if (location != null)
                     {
