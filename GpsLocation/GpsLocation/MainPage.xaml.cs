@@ -59,7 +59,7 @@ namespace GpsLocation
         #region ClearButton_Clicked
         private async void ClearButton_Clicked(object sender, EventArgs e)
         {
-            bool isYes = await DisplayAlert("삭제확인", "모두 제거 하시겠습니까?", "예", "아니오");
+            bool isYes = await DisplayAlert("Confirm All Delete", "Are you sure you want to delete all location information?", "Yes", "No");
             if (isYes)
             {
                 SetPreferences(this.SaveKey, null);
@@ -275,7 +275,7 @@ namespace GpsLocation
         /// <param name="name"></param>
         private async void DeleteAction(string name)
         {
-            bool isYes = await DisplayAlert("Delete", "'" + name + "' Do you want to delete?", "Yes", "No");
+            bool isYes = await DisplayAlert("Confirm Delete", "'" + name + "' Do you want to delete?", "Yes", "No");
             if (isYes)
             {
                 var deleteitem = locationInfos.Where(c => c.Name == name).FirstOrDefault();
