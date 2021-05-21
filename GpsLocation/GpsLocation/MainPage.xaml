@@ -8,7 +8,7 @@
             <Label Text="버튼을 누르면 현재 위치를 저장할수 있습니다." HorizontalTextAlignment="Center" TextColor="White" FontSize="25"/>
         </Frame>-->
         <!--<BoxView HeightRequest="5"/>-->
-        <Button Text="현재위치 가져오기" TextColor="White" Padding="30,10,30,10" FontSize="Medium" Clicked="GetButton_Clicked" BackgroundColor="#13818D"/>
+        <Button Text="Get Location (GPS)" TextColor="White" Padding="30,10,30,10" Margin="5" FontSize="Medium" Clicked="GetButton_Clicked" BackgroundColor="#13818D"/>
         <!--<BoxView HeightRequest="5"/>-->
         <ScrollView  VerticalOptions="FillAndExpand">
             <Grid VerticalOptions="FillAndExpand">
@@ -18,7 +18,7 @@
                 <ActivityIndicator x:Name="indicator" Color="#13818D" IsRunning="True" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Center"/>
             </Grid>
         </ScrollView>
-        <Button Text="위치목록 지우기" TextColor="White" Padding="30,10,30,10" FontSize="Medium" VerticalOptions="End" Clicked="ClearButton_Clicked" BackgroundColor="#44C2C7"/>
+        <Button Text="Delete All Location" TextColor="White" Padding="30,10,30,10" Margin="5" FontSize="Medium" VerticalOptions="End" Clicked="ClearButton_Clicked" BackgroundColor="#44C2C7"/>
         
         <!--<Label FontSize="16" Padding="30,24,30,0">
             <Label.FormattedText>
